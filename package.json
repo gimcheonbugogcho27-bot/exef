@@ -1,39 +1,45 @@
-name: Build Windows EXE
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build EXE
-        run: npm run dist -- --publish never
-
-      - name: Check EXE
-        shell: pwsh
-        run: |
-          Get-ChildItem -Path dist -Filter "*.exe" -ErrorAction Stop
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: 4-4-sns-windows-installer
-          path: dist/*.exe
-          if-no-files-found: error
-          retention-days: 30
+{
+  "name": "4-4-sns-desktop",
+  "version": "1.0.0",
+  "description": "4-4반 SNS Windows 앱",
+  "main": "main.js",
+  "author": "4-4반",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^39.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "kr.school.class44.sns",
+    "productName": "4-4반 SNS",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "package.json"
+    ],
+    "win": {
+      "icon": "4-4반-SNS-icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "4-4반 SNS",
+      "installerIcon": "4-4반-SNS-icon.ico",
+      "uninstallerIcon": "4-4반-SNS-icon.ico"
+    }
+  }
+}
