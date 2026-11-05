@@ -22,13 +22,14 @@
       "package.json"
     ],
     "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": ["x64"]
-        }
-      ]
-    },
+  "icon": "4-4반-SNS-icon.ico",
+  "target": [
+    {
+      "target": "nsis",
+      "arch": ["x64"]
+    }
+  ]
+    }
     "nsis": {
       "oneClick": true,
       "perMachine": false,
